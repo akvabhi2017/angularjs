@@ -115,5 +115,31 @@ Services, Factories and values are wrapped inside provider with
 $get() method returning the actual logic implemented inside
 the provider.
 
+Run block:
+angular.module(“myModule”).run(function(<any
+services, factories>){
+ console.log(“Application is configured. Now inside run
+ block”);
+});
+Run block is used to initialize certain values for further
+use, register global events and anything that needs to run at
+the beginning of the application. Run block is executed after
+config block, and it gets access to services, values and factories.
+Run block is executed only once in the lifetime of an Angular
+application.
+
+Filters:
+angular.module(“myModule”).
+filter(“dollarToRupeee”, function(){
+ return function(val){
+ return “Rs. “ + val * 60;
+ };
+});
+Usage:
+<span>{{price | dollarToRupee}}</span>
+Filters are used to extend the behavior of binding expressions
+and directives. In general, they are used to format values or to
+apply certain conditions. They are executed whenever the value
+bound in the binding expression is updated.
 
 ```
