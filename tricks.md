@@ -1,3 +1,4 @@
+```
 Module:
 Create a module named myModule1 that depends on
 myModule2 and myModule2:
@@ -31,3 +32,50 @@ In the view:
 <div ng-controller=”SampleController as ctrl”>
  <div>{{ctrl.city}}</div>
 </div>
+
+Defining a Service:
+angular.module(“myModule”).
+service(“sampleService”, function(){
+ var svc = this;
+ var cities=[“New Delhi”, “Mumbai”,
+ “Kolkata”, “Chennai”];
+ svc.addCity = function(city){
+ cities.push(city);
+ };
+ svc.getCities = function(){
+ return cities;
+ }
+});
+The members added to instance of the service are visible to the
+outside world. Others are private to the service. Services are
+singletons, i.e. only one instance of the service is created in the
+lifetime of an AngularJS application.
+Factory:
+angular.module(“myModule”).
+factory(“sampleFactory”, function(){
+ var cities = [“New Delhi”, “Mumbai”,
+ “Kolkata”, “Chennai”];
+ function addCity(city){cities.push(city);}
+ function getCities(){return cities;}
+ return{
+ getCities: getCities,
+ addCity:addCity
+ };
+});
+A factory is a function that returns an object. The members
+that are not added to the returning object, remain private
+to the factory. The factory function is executed once and the
+result is stored. Whenever an application asks for a factory, the
+application returns the same object. This behavior makes the
+factory a singleton.
+Value:
+angular.module(“myModule”).value(“sampleValue”, {
+ cities : [“New Delhi”, “Mumbai”, “Kolkata”,
+ “Chennai”],
+ addCity: function(city){cities.push(city);},
+ getCities: function(){return cities;}
+});
+A value is a simple JavaScript object. It is created just once, so
+value is also a singleton. Values can’t contain private members.
+All members of a value are public.
+```
