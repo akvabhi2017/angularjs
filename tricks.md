@@ -50,6 +50,7 @@ The members added to instance of the service are visible to the
 outside world. Others are private to the service. Services are
 singletons, i.e. only one instance of the service is created in the
 lifetime of an AngularJS application.
+
 Factory:
 angular.module(“myModule”).
 factory(“sampleFactory”, function(){
@@ -68,6 +69,7 @@ to the factory. The factory function is executed once and the
 result is stored. Whenever an application asks for a factory, the
 application returns the same object. This behavior makes the
 factory a singleton.
+
 Value:
 angular.module(“myModule”).value(“sampleValue”, {
  cities : [“New Delhi”, “Mumbai”, “Kolkata”,
@@ -78,4 +80,40 @@ angular.module(“myModule”).value(“sampleValue”, {
 A value is a simple JavaScript object. It is created just once, so
 value is also a singleton. Values can’t contain private members.
 All members of a value are public.
+
+Constant:
+angular.module(“myModule”).
+constant(“sampleConstant”,{pi: Math.PI});
+A constant is also like a value. The difference is, a constant can
+be injected into config blocks, but a value cannot be injected.
+
+Provider:
+angular.module(“myModule”).
+provider(“samplePrd”, function(){
+ this.initCities = function(){
+ console.log(“Initializing Cities…”);
+ };
+ this.$get = function(){
+ var cities = [“New Delhi”, “Mumbai”,
+ “Kolkata”, “Chennai”];
+ function addCity(city){
+ cities.push(city);
+ }
+ function getCities(){return cities;}
+ return{ getCities: getCities,addCity:addCity
+ };
+ }
+});
+A provider is a low level recipe. The $get() method of the
+provider is registered as a factory. Providers are available
+to config blocks and other providers. Once application
+configuration phase is completed, access to providers is
+prevented.
+After the configuration phase, the $get() method of the
+providers are executed and they are available as factories.
+Services, Factories and values are wrapped inside provider with
+$get() method returning the actual logic implemented inside
+the provider.
+
+
 ```
